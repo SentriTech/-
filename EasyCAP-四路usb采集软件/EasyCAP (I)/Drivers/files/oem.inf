@@ -1,0 +1,507 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                                                                       ;
+; STK1160.inf -- Installation information for Syntek USB 2.0 STK1160.                   ;
+;                                                                                       ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                                                                                         
+[Version]
+signature="$CHICAGO$"
+Class=Image
+ClassGUID={6BDD1FC6-810F-11D0-BEC7-08002BE2092F}
+Provider=%Company%
+LayoutFile=Layout.inf, Layout1.inf, Layout2.inf
+DriverVer=03/09/2007,1.0.3.0
+
+[SourceDisksNames]
+1=%StkDiskName%,,,
+
+[SourceDisksFiles]
+StkAMini.sys = 1
+StkACamd.sys = 1
+StkAPin.sys = 1
+StkAPipe.sys = 1
+StkASam.sys = 1
+StkScan.sys = 1
+StkAProp.ax = 1
+StkATW.ds = 1
+StkASSrv.dll = 1
+StkASv2K.exe = 1
+StkASv98.exe = 1
+StkAVFW.dll = 1
+Stk1150.exe = 1
+StkAUSD.dll = 1
+StkAWIA.dll = 1
+StkATVAp.exe = 1
+
+[DestinationDirs]
+DefaultDestDir = 11
+SYNTEK.USBDCAM.CopyDrivers = 10,system32\drivers
+SYNTEK.USBDCAM.CopyFilters = 11
+SYNTEK.USBDCAM.CopyCodecs = 11
+SYNTEK.STI.CopyFiles98 = 11
+SYNTEK.STI.CopyFilesME = 11
+SYNTEK.STI.CopyFiles2K = 11
+SYNTEK.STI.CopyFilesXP = 11
+SYNTEK.STIAPP.CopyFiles = 10
+SYNTEK.TWAIN.CopyFiles = 10,twain_32\STK1150
+
+[ControlFlags]
+; All PnP devices should be excluded from manual AddDevice Applet list
+ExcludeFromSelect=*
+
+[Manufacturer]
+%UsbMfg%=SYNTEK,NT
+
+[SYNTEK]
+%StkAMiniDescription%=SYNTEK.USBDCAM,USB\Vid_05E1&Pid_0400&MI_00
+%StkAMiniDescription%=SYNTEK.USBDCAM,USB\Vid_05E1&Pid_0408&MI_00
+
+[SYNTEK.NT]
+%StkAMiniDescription%=SYNTEK.USBDCAM.XP,USB\Vid_05E1&Pid_0400&MI_00
+%StkAMiniDescription%=SYNTEK.USBDCAM.XP,USB\Vid_05E1&Pid_0408&MI_00
+
+[SYNTEK.USBDCAM]
+Include=ks.inf, kscaptur.inf, ksfilter.inf, dshowext.inf
+Needs=KS.Registration, KSCAPTUR.Registration, DSHOWEXT.Registration
+SubClass=StillImage
+DeviceType=3
+DeviceSubType=0
+Capabilities=0x31
+Events=SYNTEK.USBDCAM.Events
+DeviceData=SYNTEK.USBDCAM.DeviceData
+ICMProfiles="sRGB Color Space Profile.icm"
+AddReg=SYNTEK.USBDCAM.AddSysReg,SYNTEK.USBDCAM.AddSetReg98ME,SYNTEK.USBDCAM.AddStiRegME
+UpdateInis=SYNTEK.USBDCAM.UpdateIni
+CopyFiles=SYNTEK.USBDCAM.CopyDrivers,SYNTEK.USBDCAM.CopyFilters,SYNTEK.USBDCAM.CopyCodecs,SYNTEK.STI.CopyFilesME,SYNTEK.STIAPP.CopyFiles,SYNTEK.TWAIN.CopyFiles
+
+[SYNTEK.USBDCAM.NT]
+Include=ks.inf, kscaptur.inf, ksfilter.inf, dshowext.inf
+Needs=KS.Registration, KSCAPTUR.Registration.NT, DSHOWEXT.Registration
+SubClass=StillImage
+DeviceType=2
+DeviceSubType=0
+Capabilities=0x01
+Events=SYNTEK.USBDCAM.Events
+DeviceData=SYNTEK.USBDCAM.DeviceData
+ICMProfiles="sRGB Color Space Profile.icm"
+AddReg=SYNTEK.USBDCAM.AddSysReg,SYNTEK.USBDCAM.AddSetReg2KXP,SYNTEK.USBDCAM.AddStiReg2K
+UpdateInis=SYNTEK.USBDCAM.UpdateIni
+CopyFiles=SYNTEK.USBDCAM.CopyDrivers,SYNTEK.USBDCAM.CopyFilters,SYNTEK.USBDCAM.CopyCodecs,SYNTEK.STI.CopyFiles2K,SYNTEK.STIAPP.CopyFiles,SYNTEK.TWAIN.CopyFiles
+
+[SYNTEK.USBDCAM.XP]
+Include=ks.inf, kscaptur.inf, ksfilter.inf, dshowext.inf
+Needs=KS.Registration, KSCAPTUR.Registration.NT, DSHOWEXT.Registration
+SubClass=StillImage
+DeviceType=3
+DeviceSubType=0
+Capabilities=0x31
+Events=SYNTEK.USBDCAM.Events
+DeviceData=SYNTEK.USBDCAM.DeviceData
+ICMProfiles="sRGB Color Space Profile.icm"
+AddReg=SYNTEK.USBDCAM.AddSysReg,SYNTEK.USBDCAM.AddSetReg2KXP,SYNTEK.USBDCAM.AddStiRegXP
+UpdateInis=SYNTEK.USBDCAM.UpdateIni
+CopyFiles=SYNTEK.USBDCAM.CopyDrivers,SYNTEK.USBDCAM.CopyFilters,SYNTEK.USBDCAM.CopyCodecs,SYNTEK.STI.CopyFilesXP,SYNTEK.STIAPP.CopyFiles,SYNTEK.TWAIN.CopyFiles
+
+[SYNTEK.USBDCAM.AddSysReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,StkAMini.sys
+HKR,,HardwareConfig,1,1
+HKR,,PageOutWhenUnopened,3,01
+; This is causing unexpected reset to our device.
+; Put this line back when our device is able to handle the power down.
+;HKR,,PowerDownWhenUnopened,3,01
+;HKR,,DontSuspendIfStreamsAreRunning,3,00
+
+; Register STK1160 Property Page
+
+; Plug-In Custom Control Interface
+HKCR,CLSID\{405755D0-12DA-4EB5-A8B7-554DDEA03A40},,,%PlugIn_CustomControlInterface%
+HKCR,CLSID\{405755D0-12DA-4EB5-A8B7-554DDEA03A40}\InprocServer32,,,StkAProp.ax
+HKCR,CLSID\{405755D0-12DA-4EB5-A8B7-554DDEA03A40}\InprocServer32,ThreadingModel,,Both
+; This IID is aggregated for the filter given the CLSID of the property set
+HKLM,System\CurrentControlSet\Control\MediaInterfaces\{405755D0-12DA-4EB5-A8B7-554DDEA03A40},,,%PlugIn_CustomControlInterface%
+HKLM,System\CurrentControlSet\Control\MediaInterfaces\{405755D0-12DA-4EB5-A8B7-554DDEA03A40},IID,1,D0,55,57,40,DA,12,B5,4E,A8,B7,55,4D,DE,A0,3A,40
+
+; Plug-In Custom Control Property Page
+HKCR,CLSID\{405755D1-12DA-4EB5-A8B7-554DDEA03A40},,,%PlugIn_CustomControlPropertyPage%
+HKCR,CLSID\{405755D1-12DA-4EB5-A8B7-554DDEA03A40}\InprocServer32,,,StkAProp.ax
+HKCR,CLSID\{405755D1-12DA-4EB5-A8B7-554DDEA03A40}\InprocServer32,ThreadingModel,,Both
+; Associate the property set with the above property page
+HKLM,System\CurrentControlSet\Control\MediaSets\{405755D0-12DA-4EB5-A8B7-554DDEA03A40}\PropertyPages\{405755D1-12DA-4EB5-A8B7-554DDEA03A40},,,%PlugIn_CustomControlPropertyPage%
+
+[SYNTEK.USBDCAM.AddSetReg98ME]
+HKR,"Settings","######",0x00010001,2852126890
+HKR,"Settings","Board Vendor",0x00010001,0
+HKR,"Settings","Board Type",0x00010001,0
+HKR,"Settings","Power Saving",0x00010001,1
+HKR,"Settings","Pin Type",0x00010001,1
+HKR,"Settings","Fast Format Enumeration",0x00010001,1
+HKR,"Settings","Optimize Stream Start",0x00010001,1
+HKR,"Settings","Video Source",0x00010001,0
+HKR,"Settings","Video Standard",0x00010001,2
+HKR,"Settings","Audio Input Configuration",0x00010001,1
+HKR,"Settings","Audio Output Configuration",0x00010001,3
+HKR,"Settings","Video Input Configuration",0x00010001,1
+HKR,"Settings","Video Output Configuration",0x00010001,2
+HKR,"Settings","VBI Output Configuration",0x00010001,0
+
+; Default Settings
+HKR,"Settings\Default\Decoder","Flip Horizontal",0x00010001,0
+HKR,"Settings\Default\Decoder","Flip Vertical",0x00010001,0
+HKR,"Settings\Default\Decoder","Decoder Type",0x00010001,1
+HKR,"Settings\Default\Decoder","Audio Type",0x00010001,0
+HKR,"Settings\Default\Decoder","Tuner Type",0x00010001,0
+HKR,"Settings\Default\Decoder","VBI",0x00010001,0
+HKR,"Settings\Default\Decoder","VBI Format",0x00010001,85
+HKR,"Settings\Default\Decoder","Brightness",0x00010001,128
+HKR,"Settings\Default\Decoder","Contrast",0x00010001,64
+HKR,"Settings\Default\Decoder","Hue",0x00010001,180
+HKR,"Settings\Default\Decoder","Saturation",0x00010001,256
+HKR,"Settings\Default\Decoder","Sharpness",0x00010001,3
+HKR,"Settings\Default\Decoder","Gamma",0x00010001,26
+HKR,"Settings\Default\Decoder","White Balance",0x00010001,128
+HKR,"Settings\Default\Decoder","Back Light",0x00010001,128
+HKR,"Settings\Default\Decoder","Color Enable",0x00010001,0
+HKR,"Settings\Default\Decoder","AWB",0x00010001,0
+HKR,"Settings\Default\Decoder","Tuner Auto Scan Enable",0x00010001,0
+HKR,"Settings\Default\Decoder","Tuner TV Standard",0x00010001,1
+HKR,"Settings\Default\Decoder","MTS Type",0x00010001,0
+HKR,"Settings\Default\Decoder","Auto Standard Detection",0x00010001,0
+
+; Current Settings
+HKR,"Settings\Current\Decoder","Flip Horizontal",0x00010001,0
+HKR,"Settings\Current\Decoder","Flip Vertical",0x00010001,0
+HKR,"Settings\Current\Decoder","Decoder Type",0x00010001,1
+HKR,"Settings\Current\Decoder","Audio Type",0x00010001,0
+HKR,"Settings\Current\Decoder","Tuner Type",0x00010001,0
+HKR,"Settings\Current\Decoder","VBI",0x00010001,0
+HKR,"Settings\Current\Decoder","VBI Format",0x00010001,85
+HKR,"Settings\Current\Decoder","Brightness",0x00010001,128
+HKR,"Settings\Current\Decoder","Contrast",0x00010001,64
+HKR,"Settings\Current\Decoder","Hue",0x00010001,180
+HKR,"Settings\Current\Decoder","Saturation",0x00010001,256
+HKR,"Settings\Current\Decoder","Sharpness",0x00010001,3
+HKR,"Settings\Current\Decoder","Gamma",0x00010001,26
+HKR,"Settings\Current\Decoder","White Balance",0x00010001,128
+HKR,"Settings\Current\Decoder","Back Light",0x00010001,128
+HKR,"Settings\Current\Decoder","Color Enable",0x00010001,0
+HKR,"Settings\Current\Decoder","AWB",0x00010001,0
+HKR,"Settings\Current\Decoder","Tuner Auto Scan Enable",0x00010001,0
+HKR,"Settings\Current\Decoder","Tuner TV Standard",0x00010001,1
+HKR,"Settings\Current\Decoder","MTS Type",0x00010001,0
+HKR,"Settings\Current\Decoder","Auto Standard Detection",0x00010001,0
+
+[SYNTEK.USBDCAM.AddSetReg2KXP]
+HKR,"Settings","######",0x00010001,0xAA0000AA
+HKR,"Settings","Board Vendor",0x00010001,0x00
+HKR,"Settings","Board Type",0x00010001,0x00
+HKR,"Settings","Power Saving",0x00010001,0x01
+HKR,"Settings","Pin Type",0x00010001,0x01
+HKR,"Settings","Fast Format Enumeration",0x00010001,0x01
+HKR,"Settings","Optimize Stream Start",0x00010001,0x01
+HKR,"Settings","Video Source",0x00010001,0x00
+HKR,"Settings","Video Standard",0x00010001,0x02
+HKR,"Settings","Audio Input Configuration",0x00010001,0x01
+HKR,"Settings","Audio Output Configuration",0x00010001,0x03
+HKR,"Settings","Video Input Configuration",0x00010001,0x01
+HKR,"Settings","Video Output Configuration",0x00010001,0x02
+HKR,"Settings","VBI Output Configuration",0x00010001,0x00
+
+; Default Settings
+HKR,"Settings\Default\Decoder","Flip Horizontal",0x00010001,0x00
+HKR,"Settings\Default\Decoder","Flip Vertical",0x00010001,0x00
+HKR,"Settings\Default\Decoder","Decoder Type",0x00010001,0x01
+HKR,"Settings\Default\Decoder","Audio Type",0x00010001,0x00
+HKR,"Settings\Default\Decoder","Tuner Type",0x00010001,0x00
+HKR,"Settings\Default\Decoder","VBI",0x00010001,0x00
+HKR,"Settings\Default\Decoder","VBI Format",0x00010001,0x55
+HKR,"Settings\Default\Decoder","Brightness",0x00010001,0x80
+HKR,"Settings\Default\Decoder","Contrast",0x00010001,0x40
+HKR,"Settings\Default\Decoder","Hue",0x00010001,0xB4
+HKR,"Settings\Default\Decoder","Saturation",0x00010001,0x100
+HKR,"Settings\Default\Decoder","Sharpness",0x00010001,0x03
+HKR,"Settings\Default\Decoder","Gamma",0x00010001,0x1A
+HKR,"Settings\Default\Decoder","White Balance",0x00010001,0x80
+HKR,"Settings\Default\Decoder","Back Light",0x00010001,0x80
+HKR,"Settings\Default\Decoder","Color Enable",0x00010001,0x00
+HKR,"Settings\Default\Decoder","AWB",0x00010001,0x00
+HKR,"Settings\Default\Decoder","Tuner Auto Scan Enable",0x00010001,0x00
+HKR,"Settings\Default\Decoder","Tuner TV Standard",0x00010001,0x01
+HKR,"Settings\Default\Decoder","MTS Type",0x00010001,0x00
+HKR,"Settings\Default\Decoder","Auto Standard Detection",0x00010001,0x00
+
+; Current Settings
+HKR,"Settings\Current\Decoder","Flip Horizontal",0x00010001,0x00
+HKR,"Settings\Current\Decoder","Flip Vertical",0x00010001,0x00
+HKR,"Settings\Current\Decoder","Decoder Type",0x00010001,0x01
+HKR,"Settings\Current\Decoder","Audio Type",0x00010001,0x00
+HKR,"Settings\Current\Decoder","Tuner Type",0x00010001,0x00
+HKR,"Settings\Current\Decoder","VBI",0x00010001,0x00
+HKR,"Settings\Current\Decoder","VBI Format",0x00010001,0x55
+HKR,"Settings\Current\Decoder","Brightness",0x00010001,0x80
+HKR,"Settings\Current\Decoder","Contrast",0x00010001,0x40
+HKR,"Settings\Current\Decoder","Hue",0x00010001,0xB4
+HKR,"Settings\Current\Decoder","Saturation",0x00010001,0x100
+HKR,"Settings\Current\Decoder","Sharpness",0x00010001,0x03
+HKR,"Settings\Current\Decoder","Gamma",0x00010001,0x1A
+HKR,"Settings\Current\Decoder","White Balance",0x00010001,0x80
+HKR,"Settings\Current\Decoder","Back Light",0x00010001,0x80
+HKR,"Settings\Current\Decoder","Color Enable",0x00010001,0x00
+HKR,"Settings\Current\Decoder","AWB",0x00010001,0x00
+HKR,"Settings\Current\Decoder","Tuner Auto Scan Enable",0x00010001,0x00
+HKR,"Settings\Current\Decoder","Tuner TV Standard",0x00010001,0x01
+HKR,"Settings\Current\Decoder","MTS Type",0x00010001,0x00
+HKR,"Settings\Current\Decoder","Auto Standard Detection",0x00010001,0x00
+
+[SYNTEK.USBDCAM.AddStiReg98]
+HKR,,USDClass,,"{ABC7EBB0-FC90-422F-93A0-FDA636C0741E}"
+HKCR,CLSID\{ABC7EBB0-FC90-422F-93A0-FDA636C0741E},,,"Syntek USD Minidriver"
+HKCR,CLSID\{ABC7EBB0-FC90-422F-93A0-FDA636C0741E}\InProcServer32,,,%11%\StkAUSD.dll
+HKCR,CLSID\{ABC7EBB0-FC90-422F-93A0-FDA636C0741E}\InProcServer32,ThreadingModel,,"Both"
+
+; Register the name of application
+HKLM,"Software\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications",%StillAPP%,,"%10%\Stk1150.exe /StiDevice:%1 /StiEvent:%2"
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","DeviceName",,"%StkAMiniDescription%"
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","DeviceSelect",0x00010001,0x00
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","PreviewApplication",,"%10%\StkATVAp.exe"
+
+; Register the name of service
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",StkSrv,,"rundll32 StkASSrv.dll,StartService StkASSrv"
+
+[SYNTEK.USBDCAM.AddStiRegME]
+HKR,,USDClass,,"{0527D1D0-88C2-11D2-82C7-00C04F8EC183}"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405},,,"Syntek WIA UI Extension"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\InProcServer32,,,%11%\StkAWIA.dll
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\InProcServer32,ThreadingModel,,"Both"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\shellex\WiaDialogExtensionHandlers\{7881DF00-0201-47CA-A17F-5C2E82DF9405},,,"Sample extension"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\shellex\ContextMenuHandlers\{7881DF00-0201-47CA-A17F-5C2E82DF9405},,,"Sample extension"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\shellex\PropertySheetHandlers\{7881DF00-0201-47CA-A17F-5C2E82DF9405},,,"Sample extension"
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce,StkAWIA,,"%11%\regsvr32 /s %11%\StkAWIA.dll"
+
+; Register the name of application
+HKLM,"Software\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications",%StillAPP%,,"%10%\Stk1150.exe /StiDevice:%1 /StiEvent:%2"
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","DeviceName",,"%StkAMiniDescription%"
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","DeviceSelect",0x00010001,0x00
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","PreviewApplication",,"%10%\StkATVAp.exe"
+
+; Register the name of service
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",StkSrv,,"rundll32 StkASSrv.dll,StartService StkASSrv"
+
+[SYNTEK.USBDCAM.AddStiReg2K]
+HKR,,USDClass,,"{ABC7EBB0-FC90-422F-93A0-FDA636C0741E}"
+HKCR,CLSID\{ABC7EBB0-FC90-422F-93A0-FDA636C0741E},,,"Syntek USD Minidriver"
+HKCR,CLSID\{ABC7EBB0-FC90-422F-93A0-FDA636C0741E}\InProcServer32,,,%11%\StkAUSD.dll
+HKCR,CLSID\{ABC7EBB0-FC90-422F-93A0-FDA636C0741E}\InProcServer32,ThreadingModel,,"Both"
+
+; Register the name of application
+HKLM,"Software\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications",%StillAPP%,,"%10%\Stk1150.exe /StiDevice:%1 /StiEvent:%2"
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","DeviceName",,"%StkAMiniDescription%"
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","DeviceSelect",0x00010001,0x00
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","PreviewApplication",,"%10%\StkATVAp.exe"
+
+; Register the name of service
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",StkSrv,,"rundll32 StkASSrv.dll,StartService StkASSrv"
+
+[SYNTEK.USBDCAM.AddStiRegXP]
+HKR,,USDClass,,"{0527D1D0-88C2-11D2-82C7-00C04F8EC183}"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405},,,"Syntek WIA UI Extension"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\InProcServer32,,,%11%\StkAWIA.dll
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\InProcServer32,ThreadingModel,,"Both"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\shellex\WiaDialogExtensionHandlers\{7881DF00-0201-47CA-A17F-5C2E82DF9405},,,"Sample extension"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\shellex\ContextMenuHandlers\{7881DF00-0201-47CA-A17F-5C2E82DF9405},,,"Sample extension"
+HKCR,CLSID\{7881DF00-0201-47CA-A17F-5C2E82DF9405}\shellex\PropertySheetHandlers\{7881DF00-0201-47CA-A17F-5C2E82DF9405},,,"Sample extension"
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce,StkAWIA,,"%11%\regsvr32 /s %11%\StkAWIA.dll"
+
+; Register the name of application
+HKLM,"Software\Microsoft\Windows\CurrentVersion\StillImage\Registered Applications",%StillAPP%,,"%10%\Stk1150.exe /StiDevice:%1 /StiEvent:%2"
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","DeviceName",,"%StkAMiniDescription%"
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","DeviceSelect",0x00010001,0x00
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\STK1150","PreviewApplication",,"%10%\StkATVAp.exe"
+
+; Register the name of service
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",StkSrv,,"rundll32 StkASSrv.dll,StartService StkASSrv"
+
+[SYNTEK.USBDCAM.HW]
+AddReg=SYNTEK_USBDCAM_AddFilter
+
+[SYNTEK_USBDCAM_AddFilter]
+HKR,,"UpperFilters",0x00000000,"StkScan.sys"
+
+[SYNTEK.USBDCAM.NT.HW]
+AddReg=SYNTEK_USBDCAM_NT_AddFilter
+
+[SYNTEK_USBDCAM_NT_AddFilter]
+HKR,,"UpperFilters",0x00010000,"StkScan"
+
+[SYNTEK.USBDCAM.XP.HW]
+AddReg=SYNTEK_USBDCAM_XP_AddFilter
+
+[SYNTEK_USBDCAM_XP_AddFilter]
+HKR,,"UpperFilters",0x00010000,"StkScan"
+
+[SYNTEK.USBDCAM.DeviceData]
+Server=local
+UI DLL=sti.dll
+UI Class ID={7881DF00-0201-47CA-A17F-5C2E82DF9405}
+TwainDS=%TwainDsName%
+SpecialInfo="UsbPC 2.0"
+
+[SYNTEK.USBDCAM.Events]
+NewPicture=%NewPicture%,{ABC7EBB1-FC90-422F-93A0-FDA636C0741E},%StillAPP%
+ButtonPressed=%ButtonPressed%,{ABC7EBB2-FC90-422F-93A0-FDA636C0741E},%StillAPP%
+
+[SYNTEK.USBDCAM.UpdateIni]
+system.ini,drivers32,,"VIDC.I420=MSh263.drv"
+
+[SYNTEK.USBDCAM.CopyDrivers]
+StkAMini.sys
+StkACamd.sys
+StkAPin.sys
+StkAPipe.sys
+StkASam.sys
+StkScan.sys
+
+[SYNTEK.USBDCAM.CopyFilters]
+StkAProp.ax
+
+[SYNTEK.USBDCAM.CopyCodecs]
+StkAVFW.dll
+
+[SYNTEK.STI.CopyFiles98]
+StkASSrv.dll
+StkASv98.exe
+StkAUSD.dll
+
+[SYNTEK.STI.CopyFilesME]
+StkASSrv.dll
+StkASv98.exe
+StkAWIA.dll
+
+[SYNTEK.STI.CopyFiles2K]
+StkASSrv.dll
+StkASv2K.exe
+StkAUSD.dll
+
+[SYNTEK.STI.CopyFilesXP]
+StkASSrv.dll
+StkASv2K.exe
+StkAWIA.dll
+
+[SYNTEK.STIAPP.CopyFiles]
+Stk1150.exe
+StkATVAp.exe
+
+[SYNTEK.TWAIN.CopyFiles]
+StkATW.ds
+
+[SYNTEK.USBDCAM.Interfaces]
+AddInterface={65E8773D-8F56-11D0-A3B9-00A0C9223196},GLOBAL,Capture.Interface
+AddInterface={A799A800-A46D-11D0-A18c-00A02401DCD4},GLOBAL,TVTuner.Interface
+AddInterface={A799A801-A46D-11D0-A18C-00A02401DCD4},GLOBAL,CrossBar.Interface
+AddInterface={A799A802-A46D-11D0-A18C-00A02401DCD4},GLOBAL,TVAudio.Interface
+
+[SYNTEK.USBDCAM.NT.Interfaces]
+AddInterface={65E8773D-8F56-11D0-A3B9-00A0C9223196},GLOBAL,Capture.Interface
+AddInterface={A799A800-A46D-11D0-A18c-00A02401DCD4},GLOBAL,TVTuner.Interface
+AddInterface={A799A801-A46D-11D0-A18C-00A02401DCD4},GLOBAL,CrossBar.Interface
+AddInterface={A799A802-A46D-11D0-A18C-00A02401DCD4},GLOBAL,TVAudio.Interface
+
+[SYNTEK.USBDCAM.XP.Interfaces]
+AddInterface={65E8773D-8F56-11D0-A3B9-00A0C9223196},GLOBAL,Capture.Interface
+AddInterface={A799A800-A46D-11D0-A18c-00A02401DCD4},GLOBAL,TVTuner.Interface
+AddInterface={A799A801-A46D-11D0-A18C-00A02401DCD4},GLOBAL,CrossBar.Interface
+AddInterface={A799A802-A46D-11D0-A18C-00A02401DCD4},GLOBAL,TVAudio.Interface
+
+[Capture.Interface]
+AddReg=Capture.AddReg
+
+[TVTuner.Interface]
+AddReg=TVTuner.AddReg
+
+[CrossBar.Interface]
+AddReg=CrossBar.AddReg
+
+[TVAudio.Interface]
+AddReg=TVAudio.AddReg
+
+[Capture.AddReg]
+HKR,,CLSID,,{17CCA71B-ECD7-11D0-B908-00A0C9223196}
+HKR,,FriendlyName,,%StkAMiniDescription%
+HKR,,ExtensionDLL,,StkAVFW.dll
+HKLM,Software\CLASSES\CLSID\{DA4E3DA0-D07D-11D0-BD50-00A0C911CE86}\Instance\{07DAD660-22F1-11D1-A9F4-00C04FBBDE8F}
+HKLM,Software\CLASSES\CLSID\{DA4E3DA0-D07D-11D0-BD50-00A0C911CE86}\Instance\{07DAD660-22F1-11D1-A9F4-00C04FBBDE8F},,,"WDM Streaming VBI Codecs"
+HKLM,Software\CLASSES\CLSID\{DA4E3DA0-D07D-11D0-BD50-00A0C911CE86}\Instance\{07DAD660-22F1-11D1-A9F4-00C04FBBDE8F},FriendlyName,,"WDM Streaming VBI Codecs"
+HKLM,Software\CLASSES\CLSID\{DA4E3DA0-D07D-11D0-BD50-00A0C911CE86}\Instance\{07DAD660-22F1-11D1-A9F4-00C04FBBDE8F},CLSID,,{07DAD660-22F1-11D1-A9F4-00C04FBBDE8F}
+HKR,PinFactory\1\Interfaces\{5BB95400-52BB-11D2-BA41-00A0C90D2B05},,,
+
+[TVTuner.AddReg]
+HKR,,CLSID,,{266EEE40-6C63-11CF-8A03-00AA006ECB65}
+HKR,,FriendlyName,,%TvTunerFilterName%
+
+[CrossBar.AddReg]
+HKR,,CLSID,,{71F96460-78F3-11D0-A18C-00A0C9118956}
+HKR,,FriendlyName,,%CrossBarFilterName%
+
+[TVAudio.AddReg]
+HKR,,CLSID,,{71F96462-78F3-11D0-A18C-00A0C9118956}
+HKR,,FriendlyName,,%TvAudioFilterName%
+
+[SYNTEK.USBDCAM.NT.Services]
+DelService=StkMini,0x00000200
+DelService=StkScan,0x00000200
+DelService=StkSSrv,0x00000200
+DelService=StkAMini,0x00000200
+DelService=StkAScan,0x00000200
+DelService=StkASSrv,0x00000200
+AddService=StkAMini,0x00000002,SYNTEK.USBDCAM.Install.Mini
+AddService=StkScan,0x00000000,SYNTEK.USBDCAM.Install.Scan
+AddService=StkASSrv,0x00000000,SYNTEK.USBDCAM.Install.SSrv
+
+[SYNTEK.USBDCAM.XP.Services]
+DelService=StkMini,0x00000200
+DelService=StkScan,0x00000200
+DelService=StkSSrv,0x00000200
+DelService=StkAMini,0x00000200
+DelService=StkAScan,0x00000200
+DelService=StkASSrv,0x00000200
+AddService=StkAMini,0x00000002,SYNTEK.USBDCAM.Install.Mini
+AddService=StkScan,0x00000000,SYNTEK.USBDCAM.Install.Scan
+AddService=StkASSrv,0x00000000,SYNTEK.USBDCAM.Install.SSrv
+
+[SYNTEK.USBDCAM.Install.Mini]
+DisplayName   = %StkAMiniDescription%
+ServiceType   = 1
+StartType     = 3
+ErrorControl  = 1
+ServiceBinary = %10%\System32\Drivers\StkAMini.sys
+
+[SYNTEK.USBDCAM.Install.Scan]
+DisplayName   = %StkScanDescription%
+ServiceType   = 1
+StartType     = 3
+ErrorControl  = 1
+ServiceBinary = %10%\System32\Drivers\StkScan.sys
+
+[SYNTEK.USBDCAM.Install.SSrv]
+DisplayName   = %StkASSrvDescription%
+ServiceType   = 16
+StartType     = 2
+ErrorControl  = 1
+ServiceBinary = %10%\System32\StkASv2K.exe
+
+[Strings]
+Company="Syntek Semiconductor Co., Ltd."
+UsbMfg="Syntek Semiconductor Co., Ltd"
+StkDiskName="Syntek STK1160 Driver Disk"
+StkAMiniDescription="Syntek STK1160"
+StkScanDescription="Syntek STK1160 Still Image"
+StkASSrvDescription="Syntek STK1160 Service"
+PlugIn_CustomControlInterface="Syntek Custom Control Interface"
+PlugIn_CustomControlPropertyPage="Syntek Custom Control Property Page"
+NewPicture="New Picture Captured"
+ButtonPressed="Button Pressed"
+TwainDsName="Syntek STK1160 TWAIN Image Capture"
+StillAPP="Syntek STK1160 Image Capture"
+TvTunerFilterName  = "Syntek TvTuner"
+CrossBarFilterName = "Syntek CrossBar"
+TvAudioFilterName  = "Syntek TvAudio"
